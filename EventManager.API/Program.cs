@@ -3,6 +3,7 @@ using EventManager.Domain.Seed;
 using Microsoft.EntityFrameworkCore;
 using EventManager.Application.Configuration;
 using System;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

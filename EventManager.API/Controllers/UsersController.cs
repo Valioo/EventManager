@@ -55,7 +55,7 @@ namespace EventManager.API.Controllers
         public async Task<IActionResult> Delete([FromBody] UpdateUserRequest request)
         {
             var response = await _userService.Update(request);
-
+            // should not be possible to delete himself
             if (response is null)
             {
                 return BadRequest();

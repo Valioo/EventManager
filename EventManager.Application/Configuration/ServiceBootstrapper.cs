@@ -1,9 +1,12 @@
 ﻿using EventManager.Application.Contracts;
 using EventManager.Application.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -15,7 +18,10 @@ public static class ServiceBootstrapper
     {
         return services
             .AddTransient<IAuthService, AuthService>()
-            .AddTransient<IUserService, UserService>();
+            .AddTransient<IUserService, UserService>()
+            .AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public static void AddJwt(this IServiceCollection services, IConfigurationSection jwtSection)

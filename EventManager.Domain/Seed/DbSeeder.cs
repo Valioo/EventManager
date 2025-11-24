@@ -17,7 +17,7 @@ public static class DbSeeder
             user.IsDeleted = false;
             await db.SaveChangesAsync();
         }
-        else
+        else if(user is null)
         {
             var admin = new User
             {

@@ -19,7 +19,7 @@ public class UserService : IUserService
     public async Task<bool> Delete(int id)
     {
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-
+        //delete user roles first
         if (user is null)
         {
             return false;
