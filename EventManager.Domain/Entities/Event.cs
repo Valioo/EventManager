@@ -19,8 +19,25 @@ public class Event
     public int LocationId { get; set; }
     public Location Location { get; set; }
 
+    public bool IsDeleted { get; set; } = false;
+
     // Navigation
     public ICollection<TicketType> TicketTypes { get; set; }
     public ICollection<EventTag> EventTags { get; set; }
     public ICollection<EventParticipant> EventParticipants { get; set; }
+
+    public Event()
+    {
+        
+    }
+
+    public Event(string title, string description, DateTime startDate, DateTime endDate, int categoryId, int locationId)
+    {
+        Title = title;
+        Description = description;
+        StartDate = startDate;
+        EndDate = endDate;
+        CategoryId = categoryId;
+        LocationId = locationId;
+    }
 }

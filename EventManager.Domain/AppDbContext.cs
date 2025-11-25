@@ -106,6 +106,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasQueryFilter(u => !u.IsDeleted);
 
+        modelBuilder.Entity<Event>()
+            .HasQueryFilter(u => !u.IsDeleted);
+
         // If you add SerialNumber to Ticket later, create unique index here:
         // modelBuilder.Entity<Ticket>().HasIndex(t => t.SerialNumber).IsUnique();
 
