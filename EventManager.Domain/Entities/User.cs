@@ -13,6 +13,6 @@ public class User
 
     // Navigation
     public ICollection<UserRole> UserRoles { get; set; }
-    public ICollection<EventParticipant> EventParticipants { get; set; }
+    public ICollection<EventSubscription> EventParticipants { get; set; }
     public ICollection<Ticket> Tickets { get; set; }
 }

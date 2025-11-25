@@ -85,4 +85,28 @@ public class EventController : ControllerBase
 
         return Ok(ticketTypes);
     }
+
+    [HttpPost("{eventId}/tags/{tagId}")]
+    public async Task<IActionResult> AttachTagToEvent(int eventId, int tagId, CancellationToken cancellationToken)
+    {
+        var result = await _eventService.AttachTag(eventId, tagId, cancellationToken);
+        if (!result)
+        {
+            return BadRequest();
+        }
+
+        return Ok();
+    }
+
+    [HttpDelete("{eventId}/tags/{tagId}")]
+    public async Task<IActionResult> DeleteTagFromEvent(int eventId, int tagId, CancellationToken cancellationToken)
+    {
+        var result = await _eventService.DeleteTagFromEvent(eventId, tagId, cancellationToken);
+        if (!result)
+        {
+            return BadRequest();
+        }
+
+        return Ok();
+    }
 }

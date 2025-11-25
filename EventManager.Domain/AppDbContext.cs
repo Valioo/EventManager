@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<EventTag> EventTags { get; set; }
 
-    public DbSet<EventParticipant> EventParticipants { get; set; }
+    public DbSet<EventSubscription> EventParticipants { get; set; }
 
     public DbSet<TicketType> TicketTypes { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
@@ -80,7 +80,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<EventTag>()
             .HasKey(et => new { et.EventId, et.TagId });
 
-        modelBuilder.Entity<EventParticipant>()
+        modelBuilder.Entity<EventSubscription>()
             .HasKey(ep => new { ep.EventId, ep.UserId });
 
         // ----------------------------
@@ -157,13 +157,13 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
 
         // Event <-> EventParticipant (M:N)
-        modelBuilder.Entity<EventParticipant>()
+        modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.Event)
             .WithMany(e => e.EventParticipants)
             .HasForeignKey(ep => ep.EventId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<EventParticipant>()
+        modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.User)
             .WithMany(u => u.EventParticipants)
             .HasForeignKey(ep => ep.UserId)

@@ -10,11 +10,37 @@ namespace EventManager.Application.Services;
 public class EventService : IEventService
 {
     private readonly AppDbContext _appDbContext;
+    private readonly ITagService _tagService;
 
-    public EventService(AppDbContext appDbContext)
+    public EventService(AppDbContext appDbContext, ITagService tagService)
     {
         _appDbContext = appDbContext;
+        _tagService = tagService;
     }
+
+    public async Task<bool> AttachTag(int eventId, int tagId, CancellationToken cancellationToken)
+    {
+        var evt = await _appDbContext.Events.FirstOrDefaultAsync(x => x.Id == eventId, cancellationToken);
+        var tag = await _appDbContext.Tags.FirstOrDefaultAsync(x => x.Id == tagId, cancellationToken);
+
+        if (evt is null || tag is null)
+        {
+            return false;
+        }
+
+        if (await _appDbContext.EventTags.AnyAsync(x => x.TagId == tagId && x.EventId == eventId, cancellationToken))
+        {
+            return false;
+        }
+
+        var eventTag = new EventTag(eventId, tagId);
+
+        await _appDbContext.EventTags.AddAsync(eventTag, cancellationToken);
+        await _appDbContext.SaveChangesAsync(cancellationToken);
+
+        return true;
+    }
+
     public async Task<EventResponse> CreateEvent(CreateEventRequest request, CancellationToken cancellationToken)
     {
         var location = await _appDbContext.Locations
@@ -55,6 +81,15 @@ public class EventService : IEventService
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
         return true;
+    }
+
+    public async Task<bool> DeleteTagFromEvent(int eventId, int tagId, CancellationToken cancellationToken)
+    {
+        var result = await _appDbContext.EventTags
+                                .Where(x => x.EventId == eventId && x.TagId == tagId)
+                                .ExecuteDeleteAsync(cancellationToken);
+
+        return result > 0;
     }
 
     public async Task<EventResponse> GetById(int id, CancellationToken cancellationToken)

@@ -2,8 +2,8 @@
 
 namespace EventManager.Domain.Entities;
 
-[Table("EventParticipants")]
-public class EventParticipant
+[Table("EventSubscriptions")]
+public class EventSubscription
 {
     public int EventId { get; set; }
     public Event Event { get; set; }

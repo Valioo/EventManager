@@ -9,4 +9,6 @@ public interface IEventService
     public Task<EventResponse> CreateEvent(CreateEventRequest request, CancellationToken cancellationToken);
     public Task<EventResponse> UpdateEvent(UpdateEventRequest request, int id, CancellationToken cancellationToken);
     public Task<bool> DeleteEvent(int id, CancellationToken cancellationToken);
+    public Task<bool> AttachTag(int eventId, int tagId, CancellationToken cancellationToken);
+    public Task<bool> DeleteTagFromEvent(int eventId, int tagId, CancellationToken cancellationToken);
 }

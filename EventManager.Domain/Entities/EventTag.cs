@@ -10,4 +10,15 @@ public class EventTag
 
     public int TagId { get; set; }
     public Tag Tag { get; set; }
+
+    public EventTag()
+    {
+        
+    }
+
+    public EventTag(int eventId, int tagId)
+    {
+        EventId = eventId;
+        TagId = tagId;
+    }
 }

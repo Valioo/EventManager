@@ -24,7 +24,7 @@ public class Event
     // Navigation
     public ICollection<TicketType> TicketTypes { get; set; }
     public ICollection<EventTag> EventTags { get; set; }
-    public ICollection<EventParticipant> EventParticipants { get; set; }
+    public ICollection<EventSubscription> EventParticipants { get; set; }
 
     public Event()
     {
