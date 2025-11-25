@@ -22,6 +22,7 @@ public static class ServiceBootstrapper
             .AddTransient<IAuthService, AuthService>()
             .AddTransient<IUserService, UserService>()
             .AddTransient<IRoleService, RoleService>()
+            .AddTransient<ICategoryService, CategoryService>()
             .AddFluentValidators();
     }
 

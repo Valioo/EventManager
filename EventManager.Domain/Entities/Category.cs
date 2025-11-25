@@ -11,4 +11,14 @@ public class Category
 
     // Navigation
     public ICollection<Event> Events { get; set; }
+
+    public Category()
+    {
+        
+    }
+
+    public Category(string name)
+    {
+        Name = name;
+    }
 }

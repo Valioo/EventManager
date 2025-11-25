@@ -52,7 +52,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.Update(request, cancellationToken);
 
