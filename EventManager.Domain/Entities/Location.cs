@@ -13,4 +13,16 @@ public class Location
 
     // Navigation
     public ICollection<Event> Events { get; set; }
+
+    public Location()
+    {
+        
+    }
+
+    public Location(string address, string city, string venueName)
+    {
+        Address = address;
+        City = city;
+        VenueName = venueName;
+    }
 }
