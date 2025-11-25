@@ -11,4 +11,14 @@ public class Tag
 
     // Navigation
     public ICollection<EventTag> EventTags { get; set; }
+
+    public Tag()
+    {
+        
+    }
+
+    public Tag(string name)
+    {
+        Name = name;
+    }
 }

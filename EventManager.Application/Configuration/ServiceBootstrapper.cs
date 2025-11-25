@@ -24,6 +24,7 @@ public static class ServiceBootstrapper
             .AddTransient<IRoleService, RoleService>()
             .AddTransient<ICategoryService, CategoryService>()
             .AddTransient<ILocationService, LocationService>()
+            .AddTransient<ITagService, TagService>()
             .AddFluentValidators();
     }
 
