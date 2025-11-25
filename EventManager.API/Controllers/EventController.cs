@@ -10,10 +10,12 @@ namespace EventManager.API.Controllers;
 public class EventController : ControllerBase
 {
     private readonly IEventService _eventService;
+    private readonly ITicketTypeService _ticketTypeService;
 
-    public EventController(IEventService eventService)
+    public EventController(IEventService eventService, ITicketTypeService ticketTypeService)
     {
         _eventService = eventService;
+        _ticketTypeService = ticketTypeService;
     }
 
     [HttpGet("{id}")]
@@ -69,5 +71,18 @@ public class EventController : ControllerBase
         }
 
         return Ok();
+    }
+
+    [HttpGet("{id}/ticket-types")]
+    public async Task<IActionResult> GetEventTicketTypes(int id, CancellationToken cancellationToken)
+    {
+        var ticketTypes = await _ticketTypeService.GetTicketTypesByEvent(id, cancellationToken);
+
+        if (ticketTypes is null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(ticketTypes);
     }
 }

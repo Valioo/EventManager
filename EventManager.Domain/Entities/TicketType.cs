@@ -16,4 +16,14 @@ public class TicketType
 
     // Navigation
     public ICollection<Ticket> Tickets { get; set; }
+
+    public TicketType() { }
+
+    public TicketType(string name, decimal price, int capacity, int eventId)
+    {
+        Name = name;
+        Price = price;
+        Capacity = capacity;
+        EventId = eventId;
+    }
 }
