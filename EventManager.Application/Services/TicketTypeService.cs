@@ -29,20 +29,22 @@ public class TicketTypeService : ITicketTypeService
         await _appDbContext.AddAsync(ticketType, cancellationToken);
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
-        return new TicketTypeResponse(ticketType);
+        return new TicketTypeResponse(ticketType, request.Capacity != 0);
     }
 
     public async Task<IList<TicketTypeResponse>> GetTicketTypesByEvent(int eventId, CancellationToken cancellationToken)
     {
         return await _appDbContext.TicketTypes
                                     .Where(x => x.EventId == eventId)
-                                    .Select(x => new TicketTypeResponse(x))
+                                    .Select(x => new TicketTypeResponse(x, x.Capacity > x.Tickets.Count))
                                     .ToListAsync(cancellationToken);
     }
 
     public async Task<TicketTypeResponse> UpdateTicketType(UpdateTicketTypeRequest request, int ticketTypeId, CancellationToken cancellationToken)
     {
-        var ticketType = await _appDbContext.TicketTypes.FirstOrDefaultAsync(x => x.Id == ticketTypeId, cancellationToken);
+        var ticketType = await _appDbContext.TicketTypes
+                                    .Include(x => x.Tickets)
+                                    .FirstOrDefaultAsync(x => x.Id == ticketTypeId, cancellationToken);
 
         if (ticketType is null)
         {
@@ -53,6 +55,6 @@ public class TicketTypeService : ITicketTypeService
 
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
-        return new TicketTypeResponse(ticketType);
+        return new TicketTypeResponse(ticketType, request.Capacity > ticketType.Tickets.Count);
     }
 }

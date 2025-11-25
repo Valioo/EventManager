@@ -8,17 +8,20 @@ public class TicketTypeResponse
     public string Name { get; set; }
     public decimal Price { get; set; }
     public int Capacity { get; set; }
+    public bool Available { get; set; }
+
 
     public TicketTypeResponse()
     {
         
     }
 
-    public TicketTypeResponse(TicketType ticketType)
+    public TicketTypeResponse(TicketType ticketType, bool isAvailable)
     {
         Id = ticketType.Id;
         Name = ticketType.Name;
         Price = ticketType.Price;
         Capacity = ticketType.Capacity;
+        Available = isAvailable;
     }
 }

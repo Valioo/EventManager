@@ -190,13 +190,6 @@ public class AppDbContext : DbContext
             .HasForeignKey(t => t.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Ticket -> Event (optional redundant FK; included because Ticket entity has EventId)
-        modelBuilder.Entity<Ticket>()
-            .HasOne(t => t.Event)
-            .WithMany() // not exposing Tickets navigation on Event to avoid duplication (if you want, add it)
-            .HasForeignKey(t => t.EventId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         // If you added Image and Message entities, wire them up here (examples commented)
         // modelBuilder.Entity<Image>()
         //     .HasOne(i => i.Event)
