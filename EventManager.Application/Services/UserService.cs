@@ -10,16 +10,23 @@ namespace EventManager.Application.Services;
 public class UserService : IUserService
 {
     private readonly AppDbContext _dbContext;
+    private readonly ICurrentUserService _currentUser;
 
-    public UserService(AppDbContext dbContext)
+    public UserService(AppDbContext dbContext, ICurrentUserService currentUser)
     {
         _dbContext = dbContext;
+        _currentUser = currentUser;
     }
     
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(int id, CancellationToken cancellationToken)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-        //delete user roles first
+        if (_currentUser?.UserId == id)
+        {
+            return false;
+        }
+
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
         if (user is null)
         {
             return false;
@@ -31,9 +38,9 @@ public class UserService : IUserService
         return user.IsDeleted;
     }
 
-    public async Task<PaginatedResponse<UserResponseDto>> Get(PaginationQuery request)
+    public async Task<PaginatedResponse<UserResponseDto>> Get(PaginationQuery request, CancellationToken cancellationToken)
     {
-        var totalCount = await _dbContext.Users.CountAsync();
+        var totalCount = await _dbContext.Users.CountAsync(cancellationToken);
         var maximumPages = (int)Math.Ceiling(totalCount / (double)request.PageSize);
 
         if (request.PageNumber > maximumPages)
@@ -53,7 +60,7 @@ public class UserService : IUserService
                             .OrderBy(u => u.FullName)
                             .Skip((request.PageNumber - 1) * request.PageSize)
                             .Take(request.PageSize)
-                            .ToListAsync();
+                            .ToListAsync(cancellationToken);
 
         var result = users.Select(u => new UserResponseDto(u)).ToList();
 
@@ -66,12 +73,12 @@ public class UserService : IUserService
         };
     }
 
-    public async Task<UserResponseDto> GetById(int id)
+    public async Task<UserResponseDto> GetById(int id, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
             .Include(x => x.UserRoles)
                 .ThenInclude(r => r.Role)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (user is null)
         {
@@ -81,10 +88,10 @@ public class UserService : IUserService
         return new UserResponseDto(user);
     }
 
-    public async Task<UserResponseDto> Update(UpdateUserRequest request)
+    public async Task<UserResponseDto> Update(UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id == request.UserId);
+            .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
         bool attemptDatabaseSave = false;
 

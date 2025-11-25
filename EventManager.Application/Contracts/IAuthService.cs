@@ -5,6 +5,6 @@ namespace EventManager.Application.Contracts;
 
 public interface IAuthService
 {
-    Task<AuthResultDto> RegisterAsync(RegisterDto dto);
-    Task<AuthResultDto> LoginAsync(LoginDto dto);
+    Task<AuthResultDto> RegisterAsync(RegisterDto dto, CancellationToken cancellationToken);
+    Task<AuthResultDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken);
 }

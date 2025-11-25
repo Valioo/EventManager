@@ -12,4 +12,10 @@ public class RoleResponseDto
         RoleId = role.RoleId;
         Name = role.Role.Name;
     }
+
+    public RoleResponseDto(Role role)
+    {
+        RoleId = role.Id;
+        Name = role.Name;
+    }
 }

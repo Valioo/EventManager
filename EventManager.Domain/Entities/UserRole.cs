@@ -10,4 +10,15 @@ public class UserRole
 
     public int RoleId { get; set; }
     public Role Role { get; set; }
+
+    public UserRole()
+    {
+        
+    }
+
+    public UserRole(int userId, int roleId)
+    {
+        UserId = userId;
+        RoleId = roleId;
+    }
 }

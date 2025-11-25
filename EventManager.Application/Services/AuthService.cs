@@ -28,9 +28,9 @@ public class AuthService : IAuthService
         _hasher = new PasswordHasher<User>();
     }
 
-    public async Task<AuthResultDto> RegisterAsync(RegisterDto dto)
+    public async Task<AuthResultDto> RegisterAsync(RegisterDto dto, CancellationToken cancellationToken)
     {
-        if (await _db.Users.AnyAsync(u => u.Email == dto.Email))
+        if (await _db.Users.AnyAsync(u => u.Email == dto.Email, cancellationToken))
             return null!;
 
         var user = new User
@@ -40,19 +40,19 @@ public class AuthService : IAuthService
             PasswordHash = PasswordHashing.HashPassword(dto.Password)
         };
 
-        await _db.Users.AddAsync(user);
+        await _db.Users.AddAsync(user, cancellationToken);
         await _db.SaveChangesAsync();
 
-        return await GenerateJwt(user);
+        return await GenerateJwt(user, cancellationToken);
     }
 
 
-    public async Task<AuthResultDto> LoginAsync(LoginDto dto)
+    public async Task<AuthResultDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken)
     {
         var user = await _db.Users
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
-            .FirstOrDefaultAsync(u => u.Email == dto.Email);
+            .FirstOrDefaultAsync(u => u.Email == dto.Email, cancellationToken);
 
         if (user is null)
             return null!;
@@ -62,17 +62,17 @@ public class AuthService : IAuthService
         if (!isAuthenticated)
             return null!;
 
-        return await GenerateJwt(user);
+        return await GenerateJwt(user, cancellationToken);
     }
 
 
-    private async Task<AuthResultDto> GenerateJwt(User user)
+    private async Task<AuthResultDto> GenerateJwt(User user, CancellationToken cancellationToken)
     {
         var roles = await _db.UserRoles
             .Include(ur => ur.Role)
             .Where(ur => ur.UserId == user.Id)
             .Select(ur => ur.Role.Name)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         var claims = new List<Claim>
         {

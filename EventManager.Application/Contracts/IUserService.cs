@@ -6,8 +6,8 @@ namespace EventManager.Application.Contracts;
 
 public interface IUserService
 {
-    public Task<PaginatedResponse<UserResponseDto>> Get(PaginationQuery request);
-    public Task<UserResponseDto> GetById(int id);
-    public Task<bool> Delete(int id);
-    public Task<UserResponseDto> Update(UpdateUserRequest request);
+    public Task<PaginatedResponse<UserResponseDto>> Get(PaginationQuery request, CancellationToken cancellationToken);
+    public Task<UserResponseDto> GetById(int id, CancellationToken cancellationToken);
+    public Task<bool> Delete(int id, CancellationToken cancellationToken);
+    public Task<UserResponseDto> Update(UpdateUserRequest request, CancellationToken cancellationToken);
 }

@@ -6,62 +6,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace EventManager.API.Controllers
+namespace EventManager.API.Controllers;
+
+[Route("api/[controller]")]
+[Authorize(Policy = "AdminOnly")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [Authorize(Policy = "AdminOnly")]
-    [ApiController]
-    public class UsersController : ControllerBase
+    private readonly IUserService _userService;
+
+    public UsersController(IUserService userService)
     {
-        private readonly IUserService _userService;
+        _userService = userService;
+    }
 
-        public UsersController(IUserService userService)
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] PaginationQuery request, CancellationToken cancellationToken)
+    {
+        return Ok(await _userService.Get(request, cancellationToken));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var response = await _userService.GetById(id, cancellationToken);
+        if (response is null)
         {
-            _userService = userService;
+            return BadRequest();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationQuery request)
+        return Ok(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
+    {
+        var response = await _userService.Delete(id, cancellationToken);
+
+        if (!response)
         {
-            return Ok(await _userService.Get(request));
+            return BadRequest();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
-        {
-            var response = await _userService.GetById(id);
-            if (response is null)
-            {
-                return BadRequest();
-            }
+        return Ok();
+    }
 
-            return Ok(response);
+    [HttpPost]
+    public async Task<IActionResult> Delete([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
+    {
+        var response = await _userService.Update(request, cancellationToken);
+
+        if (response is null)
+        {
+            return BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
-        {
-            var response = await _userService.Delete(id);
-
-            if (!response)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete([FromBody] UpdateUserRequest request)
-        {
-            var response = await _userService.Update(request);
-            // should not be possible to delete himself
-            if (response is null)
-            {
-                return BadRequest();
-            }
-
-            return Ok(response);
-        }
+        return Ok(response);
     }
 }

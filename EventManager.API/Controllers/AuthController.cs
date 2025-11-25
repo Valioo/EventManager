@@ -19,9 +19,9 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterDto dto)
+    public async Task<IActionResult> Register(RegisterDto dto, CancellationToken cancellationToken)
     {
-        var result = await _auth.RegisterAsync(dto);
+        var result = await _auth.RegisterAsync(dto, cancellationToken);
 
         if (result is null)
         {
@@ -33,9 +33,9 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("login")] // Username = admin@gmail.com, Password = admin
-    public async Task<IActionResult> Login(LoginDto dto)
+    public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
     {
-        var result = await _auth.LoginAsync(dto);
+        var result = await _auth.LoginAsync(dto, cancellationToken);
 
         if (result is null)
         {

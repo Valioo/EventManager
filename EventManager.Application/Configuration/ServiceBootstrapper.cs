@@ -17,8 +17,17 @@ public static class ServiceBootstrapper
     public static IServiceCollection BootstrapApplication(this IServiceCollection services)
     {
         return services
+            .AddHttpContextAccessor()
+            .AddScoped<ICurrentUserService, CurrentUserService>()
             .AddTransient<IAuthService, AuthService>()
             .AddTransient<IUserService, UserService>()
+            .AddTransient<IRoleService, RoleService>()
+            .AddFluentValidators();
+    }
+
+    private static IServiceCollection AddFluentValidators(this IServiceCollection services)
+    {
+        return services
             .AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
