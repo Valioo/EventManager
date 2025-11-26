@@ -3,6 +3,7 @@ using EventManager.Domain.Seed;
 using Microsoft.EntityFrameworkCore;
 using EventManager.Application.Configuration;
 using EventManager.API.Bootstrapper;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,14 @@ builder.Services.AddDbContext(builder.Configuration.GetConnectionString("Default
 builder.Services
     .BootstrapApplication()
     .AddJwt(builder.Configuration.GetSection("Jwt"));
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,6 +33,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 
 app.UseHttpsRedirection();
@@ -32,6 +42,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHangfireDashboard();
 
 using (var scope = app.Services.CreateScope())
 {
