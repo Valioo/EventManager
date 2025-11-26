@@ -10,4 +10,15 @@ public class EventSubscription
 
     public int UserId { get; set; }
     public User User { get; set; }
+
+    public EventSubscription()
+    {
+        
+    }
+
+    public EventSubscription(int eventId, int userId)
+    {
+        EventId = eventId;
+        UserId = userId;
+    }
 }

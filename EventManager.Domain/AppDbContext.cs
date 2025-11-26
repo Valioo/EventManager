@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<EventTag> EventTags { get; set; }
 
-    public DbSet<EventSubscription> EventParticipants { get; set; }
+    public DbSet<EventSubscription> EventSubscriptions { get; set; }
 
     public DbSet<TicketType> TicketTypes { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
