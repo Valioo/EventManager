@@ -1,4 +1,5 @@
 ﻿using EventManager.Application.Contracts;
+using EventManager.Application.Helpers.Pagination;
 using EventManager.Application.Requests.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -156,5 +157,13 @@ public class EventController : ControllerBase
         }
 
         return Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Search([FromQuery] PaginationQuery pages,[FromQuery] EventSearchRequest request, CancellationToken cancellationToken)
+    {
+        var response = await _eventService.Search(request, pages, cancellationToken);
+
+        return Ok(response);
     }
 }

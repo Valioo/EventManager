@@ -1,4 +1,5 @@
 ﻿using EventManager.Application.Contracts;
+using EventManager.Application.Helpers.Pagination;
 using EventManager.Application.Requests.Events;
 using EventManager.Application.Responses.Events;
 using EventManager.Domain;
@@ -168,5 +169,62 @@ public class EventService : IEventService
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
         return new EventResponse(cEvent);
+    }
+
+    public async Task<PaginatedResponse<EventResponse>> Search(
+        EventSearchRequest request,
+        PaginationQuery pagination,
+        CancellationToken cancellationToken)
+    {
+        var query = _appDbContext.Events
+            .AsNoTracking()
+            .Include(e => e.Category)
+            .Include(e => e.Location)
+            .Include(e => e.EventTags)
+                .ThenInclude(et => et.Tag)
+            .AsQueryable();
+
+        if (request.CategoryId is not null)
+        {
+            query = query.Where(e => e.CategoryId == request.CategoryId.Value);
+        }
+
+        if (request.LocationId is not null)
+        {
+            query = query.Where(e => e.LocationId == request.LocationId.Value);
+        }
+
+        if (request.TagIds is not null && request.TagIds.Count != 0)
+        {
+            var tagIds = request.TagIds;
+
+            query = query.Where(e =>
+                tagIds.All(tagId =>
+                    e.EventTags.Any(et => et.TagId == tagId)
+                )
+            );
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var maxPages = (int)Math.Ceiling(totalCount / (double)pagination.PageSize);
+
+        var events = await query
+            .OrderBy(e => e.StartDate)
+            .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
+            .ToListAsync(cancellationToken);
+
+        var eventResponses = events
+            .Select(e => new EventResponse(e))
+            .ToList();
+
+        return new PaginatedResponse<EventResponse>
+        {
+            Result = eventResponses,
+            PageNumber = pagination.PageNumber,
+            PageSize = pagination.PageSize,
+            MaximumPages = maxPages
+        };
     }
 }
