@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using EventManager.Application.Configuration;
 using EventManager.API.Bootstrapper;
 using Hangfire;
+using EventManager.Application.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHangfireDashboard();
+
+RecurringJob.AddOrUpdate<IEventNotificationJob>(
+    "daily-event-notification-check",
+    job => job.RunAsync(),
+    Cron.Daily
+);
 
 using (var scope = app.Services.CreateScope())
 {

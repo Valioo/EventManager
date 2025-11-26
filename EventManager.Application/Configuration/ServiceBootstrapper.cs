@@ -1,4 +1,5 @@
 ﻿using EventManager.Application.Contracts;
+using EventManager.Application.Jobs;
 using EventManager.Application.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -30,6 +31,7 @@ public static class ServiceBootstrapper
             .AddTransient<ITicketService, TicketService>()
             .AddTransient<IEventSubscriptionService, EventSubscriptionService>()
             .AddTransient<IEventNotificationService, EventNotificationService>()
+            .AddTransient<IEventNotificationJob, EventNotificationJob>()
             .AddFluentValidators();
     }
 
