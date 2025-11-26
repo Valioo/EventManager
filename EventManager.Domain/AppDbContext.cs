@@ -83,6 +83,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<EventSubscription>()
             .HasKey(ep => new { ep.EventId, ep.UserId });
 
+        modelBuilder.Entity<EventNotification>()
+            .HasKey(ep => new { ep.EventId, ep.NotificationId });
+
         // ----------------------------
         // Indexes / Uniqueness
         // ----------------------------
@@ -116,12 +119,25 @@ public class AppDbContext : DbContext
         // Relationships
         // ----------------------------
 
+        // Notification <-> EventNotifications (M:N)
+        modelBuilder.Entity<EventNotification>()
+            .HasOne(en => en.Event)
+            .WithMany(en => en.EventNotifications)
+            .HasForeignKey(x => x.EventId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<EventNotification>()
+            .HasOne(en => en.Notification)
+            .WithMany(en => en.EventNotifications)
+            .HasForeignKey(x => x.NotificationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         // User <-> UserRole (M:N)
         modelBuilder.Entity<UserRole>()
             .HasOne(ur => ur.User)
             .WithMany(u => u.UserRoles)
             .HasForeignKey(ur => ur.UserId)
-            .OnDelete(DeleteBehavior.Restrict); // deleting user removes its roles links
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserRole>()
             .HasOne(ur => ur.Role)
