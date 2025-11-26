@@ -18,6 +18,12 @@ public class EventController : ControllerBase
         _ticketTypeService = ticketTypeService;
     }
 
+    /// <summary>
+    /// Get single event details by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEvent(int id, CancellationToken cancellationToken)
     {
@@ -31,6 +37,12 @@ public class EventController : ControllerBase
         return Ok(evt);
     }
 
+    /// <summary>
+    /// Create event. Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> CreateEvent([FromBody] CreateEventRequest request, CancellationToken cancellationToken)
@@ -45,6 +57,13 @@ public class EventController : ControllerBase
         return Ok(createdEvent);
     }
 
+    /// <summary>
+    /// Update single event details. Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> UpdateEvent(int id, [FromBody] UpdateEventRequest request, CancellationToken cancellationToken)
@@ -59,6 +78,13 @@ public class EventController : ControllerBase
         return Ok(updated);
     }
 
+
+    /// <summary>
+    /// Soft delete an event. Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> DeleteEvent(int id, CancellationToken cancellationToken)
@@ -73,6 +99,12 @@ public class EventController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Get all ticket types for a specified event
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("{id}/ticket-types")]
     public async Task<IActionResult> GetEventTicketTypes(int id, CancellationToken cancellationToken)
     {
@@ -86,7 +118,15 @@ public class EventController : ControllerBase
         return Ok(ticketTypes);
     }
 
+    /// <summary>
+    /// Attach a tag to event. Allowed to Administrators & Organizers 
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="tagId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("{eventId}/tags/{tagId}")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> AttachTagToEvent(int eventId, int tagId, CancellationToken cancellationToken)
     {
         var result = await _eventService.AttachTag(eventId, tagId, cancellationToken);
@@ -98,7 +138,15 @@ public class EventController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Remove a tag from event. Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="eventId"></param>
+    /// <param name="tagId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{eventId}/tags/{tagId}")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> DeleteTagFromEvent(int eventId, int tagId, CancellationToken cancellationToken)
     {
         var result = await _eventService.DeleteTagFromEvent(eventId, tagId, cancellationToken);

@@ -17,12 +17,24 @@ public class RolesController : ControllerBase
         _roleService = roleService;
     }
 
+    /// <summary>
+    /// List all roles. Allowed to Adminisrtators only
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         return Ok(await _roleService.GetAllRoles(cancellationToken));
     }
 
+    /// <summary>
+    /// Assign a role to a user. Allowed to Administrators only
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("{roleId}/assign/{userId}")]
     public async Task<IActionResult> Assign(int roleId, int userId, CancellationToken cancellationToken)
     {
@@ -36,6 +48,13 @@ public class RolesController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Remove role from a user. Allowed to Administrators only
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <param name="userId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{roleId}/unassign/{userId}")]
     public async Task<IActionResult> Unassign(int roleId, int userId, CancellationToken cancellationToken)
     {

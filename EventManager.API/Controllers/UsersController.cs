@@ -20,12 +20,24 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
+    /// <summary>
+    /// List all users. Allowed to Adminisrtators only
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] PaginationQuery request, CancellationToken cancellationToken)
     {
         return Ok(await _userService.Get(request, cancellationToken));
     }
 
+    /// <summary>
+    /// Get user by id. Allowed to Adminisrtators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] int id, CancellationToken cancellationToken)
     {
@@ -38,6 +50,12 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Soft delete user. Allowed to Adminisrtators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
     {
@@ -51,6 +69,12 @@ public class UsersController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Update user info. Allowed to Adminisrtators only
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Update([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {

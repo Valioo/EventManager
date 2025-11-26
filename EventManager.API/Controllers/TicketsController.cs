@@ -18,6 +18,12 @@ public class TicketsController : ControllerBase
         _ticketService = ticketService;
     }
 
+    /// <summary>
+    /// Finalize ticket purchase for an authenticated user
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("purchase")]
     public async Task<IActionResult> Purchase(PurchaseTicketRequest request, CancellationToken cancellationToken)
     {
@@ -30,7 +36,12 @@ public class TicketsController : ControllerBase
 
         return Ok();
     }
-
+    
+    /// <summary>
+    /// Return all purchased tickets
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("mine")]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {

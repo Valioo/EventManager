@@ -18,6 +18,12 @@ public class TicketTypesController : ControllerBase
         _ticketTypeService = ticketTypeService;
     }
 
+    /// <summary>
+    /// Create a ticket type for an event. Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTicketTypeRequest request, CancellationToken cancellationToken)
     {
@@ -31,6 +37,13 @@ public class TicketTypesController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Update ticket-type (only capacity). Allowed to Administrators & Organizers
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(UpdateTicketTypeRequest request, int id, CancellationToken cancellationToken)
     {

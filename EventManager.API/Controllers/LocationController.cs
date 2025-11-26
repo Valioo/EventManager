@@ -18,12 +18,23 @@ public class LocationController : ControllerBase
         _locationService = locationService;
     }
 
+    /// <summary>
+    /// List all locations
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         return Ok(await _locationService.GetLocations(cancellationToken));
     }
 
+    /// <summary>
+    /// Creates a location. Allowed to Administrators only
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Create([FromBody] CreateLocationRequest request, CancellationToken cancellationToken)
@@ -38,6 +49,13 @@ public class LocationController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Updates a location. Allowed to Administrators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateLocationRequest request, CancellationToken cancellationToken)
@@ -52,6 +70,12 @@ public class LocationController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Deletes a location. This is not a soft delete. Allowed to Administrators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)

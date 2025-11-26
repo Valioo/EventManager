@@ -10,7 +10,6 @@ namespace EventManager.API.Controllers
     public class HealthController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
         public IActionResult Get()
         {
             return Ok();

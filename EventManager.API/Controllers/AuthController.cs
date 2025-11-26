@@ -17,7 +17,12 @@ public class AuthController : ControllerBase
         _auth = auth;
     }
 
-
+    /// <summary>
+    /// Facilitates user registration
+    /// </summary>
+    /// <param name="dto">User details</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto, CancellationToken cancellationToken)
     {
@@ -32,6 +37,12 @@ public class AuthController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Facilitates login. Returns jwt token with id, email & roles
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("login")] // Username = admin@gmail.com, Password = admin
     public async Task<IActionResult> Login(LoginDto dto, CancellationToken cancellationToken)
     {

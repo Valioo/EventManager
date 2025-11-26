@@ -18,12 +18,23 @@ public class TagsController : ControllerBase
         _tagsService = tagsService;
     }
 
+    /// <summary>
+    /// List all tags
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         return Ok(await _tagsService.GetTags(cancellationToken));
     }
 
+    /// <summary>
+    /// Create a tag. Allowed to Administrators only
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Create([FromBody] TagRequest request, CancellationToken cancellationToken)
@@ -38,6 +49,13 @@ public class TagsController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Updates a tag. Allowed to Administrators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPut("{id}")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] TagRequest request, CancellationToken cancellationToken)
@@ -52,6 +70,12 @@ public class TagsController : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Deletes a tag. Allowed to Administrators only
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken)
