@@ -31,6 +31,9 @@ public class AppDbContext : DbContext
     public DbSet<TicketType> TicketTypes { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
 
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<EventNotification> EventNotifications { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Get the connection string from appsettings.json

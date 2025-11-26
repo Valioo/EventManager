@@ -29,6 +29,7 @@ public static class ServiceBootstrapper
             .AddTransient<ITicketTypeService, TicketTypeService>()
             .AddTransient<ITicketService, TicketService>()
             .AddTransient<IEventSubscriptionService, EventSubscriptionService>()
+            .AddTransient<IEventNotificationService, EventNotificationService>()
             .AddFluentValidators();
     }
 
