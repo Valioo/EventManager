@@ -14,7 +14,6 @@ public class AppDbContext : DbContext
         _configuration = configuration;
     }
 
-    // DbSets
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
@@ -36,45 +35,17 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // Get the connection string from appsettings.json
         var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-        // Configure the DbContext to use SQL Server with the connection string
         optionsBuilder.UseSqlServer(connectionString);
     }
-
-    //public DbSet<Image> Images { get; set; }       // optional if you add Images entity later
-    //public DbSet<Message> Messages { get; set; }   // optional if you add Messages entity later
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // ----------------------------
-        // Table names (optional)
-        // ----------------------------
-        //modelBuilder.Entity<User>().ToTable("Users");
-        //modelBuilder.Entity<Role>().ToTable("Roles");
-        //modelBuilder.Entity<UserRole>().ToTable("UserRoles");
-
-        //modelBuilder.Entity<Event>().ToTable("Events");
-        //modelBuilder.Entity<Category>().ToTable("Categories");
-        //modelBuilder.Entity<Location>().ToTable("Locations");
-
-        //modelBuilder.Entity<Tag>().ToTable("Tags");
-        //modelBuilder.Entity<EventTag>().ToTable("EventTags");
-
-        //modelBuilder.Entity<EventParticipant>().ToTable("EventParticipants");
-
-        //modelBuilder.Entity<TicketType>().ToTable("TicketTypes");
-        //modelBuilder.Entity<Ticket>().ToTable("Tickets");
-
-        // Images & Messages tables are optional - create only if you included the classes
-        // modelBuilder.Entity<Image>().ToTable("Images");
-        // modelBuilder.Entity<Message>().ToTable("Messages");
-
-        // ----------------------------
-        // Keys & composite keys
+        // Composite keys
         // ----------------------------
 
         modelBuilder.Entity<UserRole>()
@@ -114,9 +85,6 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Event>()
             .HasQueryFilter(u => !u.IsDeleted);
-
-        // If you add SerialNumber to Ticket later, create unique index here:
-        // modelBuilder.Entity<Ticket>().HasIndex(t => t.SerialNumber).IsUnique();
 
         // ----------------------------
         // Relationships
@@ -175,7 +143,7 @@ public class AppDbContext : DbContext
             .HasForeignKey(et => et.TagId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Event <-> EventParticipant (M:N)
+        // Event <-> EventSubscription (M:N)
         modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.Event)
             .WithMany(e => e.EventParticipants)
@@ -208,18 +176,5 @@ public class AppDbContext : DbContext
             .WithMany(u => u.Tickets)
             .HasForeignKey(t => t.UserId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        // If you added Image and Message entities, wire them up here (examples commented)
-        // modelBuilder.Entity<Image>()
-        //     .HasOne(i => i.Event)
-        //     .WithMany(e => e.Images)
-        //     .HasForeignKey(i => i.EventId)
-        //     .OnDelete(DeleteBehavior.Cascade);
-
-        // modelBuilder.Entity<Message>()
-        //     .HasOne(m => m.FromUser)
-        //     .WithMany() // optionally create navigation on User
-        //     .HasForeignKey(m => m.FromUserId)
-        //     .OnDelete(DeleteBehavior.Restrict);
     }
 }

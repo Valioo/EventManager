@@ -28,6 +28,13 @@ public class LocationService : ILocationService
 
     public async Task<bool> DeleteLocation(int locationId, CancellationToken cancellationToken)
     {
+        var used = await _appDbContext.Events.AnyAsync(x => x.LocationId == locationId);
+        if (used)
+        {
+            return false;
+        }
+
+
         var category = await _appDbContext.Locations
                                 .Where(x => x.Id == locationId)
                                 .ExecuteDeleteAsync(cancellationToken);

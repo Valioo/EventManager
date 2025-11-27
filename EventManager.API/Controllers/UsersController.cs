@@ -75,7 +75,7 @@ public class UsersController : ControllerBase
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _userService.Update(request, cancellationToken);

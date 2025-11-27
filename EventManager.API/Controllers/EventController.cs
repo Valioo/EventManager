@@ -159,6 +159,13 @@ public class EventController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Search for events based on criteria
+    /// </summary>
+    /// <param name="pages"></param>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<IActionResult> Search([FromQuery] PaginationQuery pages,[FromQuery] EventSearchRequest request, CancellationToken cancellationToken)
     {

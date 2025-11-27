@@ -15,7 +15,13 @@ public class NotificationsController : ControllerBase
     {
         _eventNotificationService = eventNotificationService;
     }
-
+    
+    /// <summary>
+    /// Creates a notification. Allowed for Administrators only
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> CreateNotification(CreateNotificationRequest request, CancellationToken cancellationToken)
@@ -30,6 +36,12 @@ public class NotificationsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Delets a notification. Allowed for Administrators only
+    /// </summary>
+    /// <param name="notificationId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete]
     [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteNotification(int notificationId, CancellationToken cancellationToken)
@@ -44,6 +56,11 @@ public class NotificationsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// List all notifications
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpGet]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
@@ -53,6 +70,12 @@ public class NotificationsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Attach notification to event
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpPost("events")]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> AttachNotification([FromBody] EventNotificationRequest request, CancellationToken cancellationToken)
@@ -67,6 +90,12 @@ public class NotificationsController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Remove notification from event
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [HttpDelete("events")]
     [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> DetachNotification([FromBody] EventNotificationRequest request, CancellationToken cancellationToken)

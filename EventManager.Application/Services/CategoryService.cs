@@ -28,6 +28,12 @@ public class CategoryService : ICategoryService
 
     public async Task<bool> DeleteCategory(int categoryId, CancellationToken cancellationToken)
     {
+        var used = await _appDbContext.Events.AnyAsync(x => x.CategoryId == categoryId);
+        if (used)
+        {
+            return false;
+        }
+
         var category = await _appDbContext.Categories
                                 .Where(x => x.Id == categoryId)
                                 .ExecuteDeleteAsync(cancellationToken);
