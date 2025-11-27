@@ -135,13 +135,13 @@ public class AppDbContext : DbContext
             .HasOne(et => et.Event)
             .WithMany(e => e.EventTags)
             .HasForeignKey(et => et.EventId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<EventTag>()
             .HasOne(et => et.Tag)
             .WithMany(t => t.EventTags)
             .HasForeignKey(et => et.TagId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Event <-> EventSubscription (M:N)
         modelBuilder.Entity<EventSubscription>()
@@ -152,7 +152,7 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.User)
-            .WithMany(u => u.EventParticipants)
+            .WithMany(u => u.EventSubscribers)
             .HasForeignKey(ep => ep.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
