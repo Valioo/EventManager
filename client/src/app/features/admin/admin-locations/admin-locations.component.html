@@ -1,0 +1,56 @@
+<div class="admin-locations">
+  <div class="header">
+    <h1>Locations</h1>
+    <form class="add-form" (ngSubmit)="addLocation()">
+      <input type="text" [(ngModel)]="newLocation.venueName" name="venueName" placeholder="Venue name" />
+      <input type="text" [(ngModel)]="newLocation.address" name="address" placeholder="Address" />
+      <input type="text" [(ngModel)]="newLocation.city" name="city" placeholder="City" />
+      <button type="submit" class="btn-primary">Add location</button>
+    </form>
+  </div>
+  @if (locations$ | async; as list) {
+    @if (list.length === 0) {
+      <p class="empty">No locations yet. Add one above.</p>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Venue</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (loc of list; track loc.id) {
+            @if (editingId() === loc.id) {
+              <tr class="edit-row">
+                <td colspan="4">
+                  <form class="inline-form" (ngSubmit)="saveLocation(loc)">
+                    <input type="text" [(ngModel)]="editForm.venueName" name="venueName" placeholder="Venue" />
+                    <input type="text" [(ngModel)]="editForm.address" name="address" placeholder="Address" />
+                    <input type="text" [(ngModel)]="editForm.city" name="city" placeholder="City" />
+                    <button type="submit" class="btn-primary">Save</button>
+                    <button type="button" class="btn-link" (click)="cancelEdit()">Cancel</button>
+                  </form>
+                </td>
+              </tr>
+            } @else {
+              <tr>
+                <td>{{ loc.venueName || '—' }}</td>
+                <td>{{ loc.address || '—' }}</td>
+                <td>{{ loc.city || '—' }}</td>
+                <td class="actions">
+                  <button type="button" class="btn-link" (click)="startEdit(loc)">Edit</button>
+                  <button type="button" class="btn-delete" (click)="deleteLocation(loc.id)">Delete</button>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
+  } @else {
+    <p>Loading…</p>
+  }
+</div>

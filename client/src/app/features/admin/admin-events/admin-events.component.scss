@@ -1,0 +1,86 @@
+.admin-events {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .btn-primary {
+      padding: 0.5rem 1rem;
+      background: #1976d2;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+
+      &:hover {
+        background: #1565c0;
+      }
+    }
+  }
+
+  .empty {
+    color: #666;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+      background: #f8f9fa;
+    }
+
+    a {
+      color: #1976d2;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+
+      .btn-link {
+        font-size: 0.875rem;
+      }
+
+      .btn-delete {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        color: #c62828;
+        background: transparent;
+        border: 1px solid #ef9a9a;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: #ffebee;
+        }
+      }
+    }
+  }
+
+  .meta {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+}

@@ -1,4 +1,4 @@
-﻿using EventManager.Application.Contracts;
+using EventManager.Application.Contracts;
 using EventManager.Application.Helpers.Pagination;
 using EventManager.Application.Requests.Events;
 using Microsoft.AspNetCore.Authorization;

@@ -1,0 +1,115 @@
+<div class="event-form">
+  <h1>{{ isEdit() ? 'Edit event' : 'Create event' }}</h1>
+  <a routerLink="/events" class="back">Back to events</a>
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" type="text" formControlName="title" />
+      @if (form.controls.title.invalid && form.controls.title.touched) {
+        <span class="field-error">Title is required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description" rows="4"></textarea>
+      @if (form.controls.description.invalid && form.controls.description.touched) {
+        <span class="field-error">Description is required.</span>
+      }
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="startDate">Start date</label>
+        <input id="startDate" type="datetime-local" formControlName="startDate" />
+        @if (form.controls.startDate.invalid && form.controls.startDate.touched) {
+          <span class="field-error">Start date is required.</span>
+        }
+      </div>
+      <div class="field">
+        <label for="endDate">End date</label>
+        <input id="endDate" type="datetime-local" formControlName="endDate" />
+        @if (form.controls.endDate.invalid && form.controls.endDate.touched) {
+          <span class="field-error">End date is required.</span>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="categoryId">Category</label>
+      <select id="categoryId" formControlName="categoryId">
+        <option [ngValue]="0">Select category</option>
+        @for (cat of categories$ | async; track cat.categoryId) {
+          <option [ngValue]="cat.categoryId">{{ cat.name }}</option>
+        }
+      </select>
+      @if (form.controls.categoryId.invalid && form.controls.categoryId.touched) {
+        <span class="field-error">Category is required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="locationId">Location</label>
+      <select id="locationId" formControlName="locationId">
+        <option [ngValue]="0">Select location</option>
+        @for (loc of locations$ | async; track loc.id) {
+          <option [ngValue]="loc.id">{{ loc.venueName }}, {{ loc.city }}</option>
+        }
+      </select>
+      @if (form.controls.locationId.invalid && form.controls.locationId.touched) {
+        <span class="field-error">Location is required.</span>
+      }
+    </div>
+
+    <div class="field tags-field">
+      <label>Tags</label>
+      @if (isEdit()) {
+        @if (tags$ | async; as allTags) {
+          <div class="tag-pills">
+            @for (tag of eventTags(); track tag.id) {
+              <span class="tag-pill">
+                {{ tag.name }}
+                <button type="button" class="tag-remove" (click)="removeTagFromEvent(tag.id)" [disabled]="tagActionInProgress()" title="Remove tag">×</button>
+              </span>
+            }
+          </div>
+          @let toAdd = tagsNotOnEvent(allTags);
+          @if (toAdd.length) {
+            <select class="tag-add" (change)="onAddTagToEvent($event, toAdd)" [disabled]="tagActionInProgress()">
+              <option value="">Add tag…</option>
+              @for (t of toAdd; track t.id) {
+                <option [value]="t.id">{{ t.name }}</option>
+              }
+            </select>
+          }
+        }
+      } @else {
+        <div class="tag-checkboxes">
+          @if (tags$ | async; as allTags) {
+            @for (tag of allTags; track tag.id) {
+              <label class="tag-checkbox">
+                <input type="checkbox" [checked]="selectedTagIds().includes(tag.id)" (change)="toggleCreateTag(tag.id, $any($event.target).checked)" />
+                {{ tag.name }}
+              </label>
+            }
+            @if (allTags.length === 0) {
+              <span class="hint">No tags available. Add tags in Admin → Tags.</span>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="saving">
+        {{ saving ? 'Saving…' : (isEdit() ? 'Update' : 'Create') }}
+      </button>
+      <a routerLink="/events" class="cancel">Cancel</a>
+    </div>
+  </form>
+</div>

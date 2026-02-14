@@ -1,0 +1,70 @@
+<div class="admin-users">
+  <div class="header">
+    <h1>Manage Users</h1>
+  </div>
+  @if (users$ | async; as result) {
+    @if (result.result.length === 0) {
+      <p class="empty">No users found.</p>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of result.result; track user.id) {
+            @if (editingId() === user.id) {
+              <tr class="edit-row">
+                <td colspan="4">
+                  <form class="inline-form" (ngSubmit)="saveUser(user)">
+                    <input type="text" [(ngModel)]="editForm.fullName" name="fullName" placeholder="Full name" />
+                    <input type="email" [(ngModel)]="editForm.email" name="email" placeholder="Email" />
+                    <button type="submit" class="btn-primary">Save</button>
+                    <button type="button" class="btn-link" (click)="cancelEdit()">Cancel</button>
+                  </form>
+                </td>
+              </tr>
+            } @else {
+              <tr>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td class="roles-cell">
+                  @if (roles$ | async; as allRoles) {
+                    <span class="role-pills">
+                      @for (role of user.roles; track role.roleId) {
+                        <span class="role-pill">
+                          {{ role.name }}
+                          <button type="button" class="role-remove" (click)="unassignRole(user.id, role.roleId)" [disabled]="roleActionInProgress() !== null" title="Remove role">×</button>
+                        </span>
+                      }
+                    </span>
+                    @let available = rolesNotAssignedTo(user, allRoles);
+                    @if (available.length) {
+                      <select class="role-add" (change)="onAddRole($event, user.id)" [disabled]="roleActionInProgress() !== null">
+                        <option value="">Add role…</option>
+                        @for (r of available; track r.roleId) {
+                          <option [value]="r.roleId">{{ r.name }}</option>
+                        }
+                      </select>
+                    }
+                  }
+                </td>
+                <td class="actions">
+                  <button type="button" class="btn-link" (click)="startEdit(user)">Edit</button>
+                  <button type="button" class="btn-delete" (click)="deleteUser(user.id)">Delete</button>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+      <p class="meta">Page {{ result.pageNumber }} of {{ result.maximumPages }}</p>
+    }
+  } @else {
+    <p>Loading…</p>
+  }
+</div>

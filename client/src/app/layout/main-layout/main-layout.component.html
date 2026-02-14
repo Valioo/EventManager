@@ -1,0 +1,19 @@
+<header class="header">
+  <nav class="nav">
+    <a routerLink="/events" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Events</a>
+    @if (canManageEvents) {
+      <a routerLink="/events/new" routerLinkActive="active">Create event</a>
+      <a routerLink="/notifications" routerLinkActive="active">Notifications</a>
+    }
+    @if (isAdmin) {
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Admin</a>
+    }
+  </nav>
+  <div class="user">
+    <span class="email">{{ email }}</span>
+    <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+  </div>
+</header>
+<main class="main">
+  <router-outlet />
+</main>

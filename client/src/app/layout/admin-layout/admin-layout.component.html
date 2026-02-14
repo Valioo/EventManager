@@ -1,0 +1,17 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin</h2>
+    <nav class="sidebar-nav">
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+      <a routerLink="/admin/users" routerLinkActive="active">Users</a>
+      <a routerLink="/admin/events" routerLinkActive="active">Events</a>
+      <a routerLink="/admin/categories" routerLinkActive="active">Categories</a>
+      <a routerLink="/admin/locations" routerLinkActive="active">Locations</a>
+      <a routerLink="/admin/tags" routerLinkActive="active">Tags</a>
+      <a routerLink="/admin/notifications" routerLinkActive="active">Notifications</a>
+    </nav>
+  </aside>
+  <div class="content">
+    <router-outlet />
+  </div>
+</div>

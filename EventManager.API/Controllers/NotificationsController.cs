@@ -1,4 +1,4 @@
-﻿using EventManager.Application.Contracts;
+using EventManager.Application.Contracts;
 using EventManager.Application.Requests.Notification;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ public class NotificationsController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> CreateNotification(CreateNotificationRequest request, CancellationToken cancellationToken)
     {
         var result = await _eventNotificationService.CreateNotification(request, cancellationToken);
@@ -37,13 +37,27 @@ public class NotificationsController : ControllerBase
     }
 
     /// <summary>
-    /// Delets a notification. Allowed for Administrators only
+    /// Updates a notification. Allowed for Administrators and Organizers
     /// </summary>
-    /// <param name="notificationId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpDelete]
-    [Authorize(Policy = "AdminOnly")]
+    [HttpPut("{notificationId:int}")]
+    [Authorize(Policy = "AdminOrOrganizer")]
+    public async Task<IActionResult> UpdateNotification(int notificationId, [FromBody] UpdateNotificationRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _eventNotificationService.UpdateNotification(notificationId, request, cancellationToken);
+
+        if (!result)
+        {
+            return BadRequest();
+        }
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Deletes a notification. Allowed for Administrators and Organizers.
+    /// </summary>
+    [HttpDelete("{notificationId:int}")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> DeleteNotification(int notificationId, CancellationToken cancellationToken)
     {
         var result = await _eventNotificationService.DeleteNotification(notificationId, cancellationToken);

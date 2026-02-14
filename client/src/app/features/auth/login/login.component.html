@@ -1,0 +1,30 @@
+<div class="auth-card">
+  <h1>Login</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <span class="field-error">
+          @if (form.get('email')?.errors?.['required']) {
+            Email is required.
+          } @else if (form.get('email')?.errors?.['email']) {
+            Please enter a valid email address.
+          }
+        </span>
+      }
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <span class="field-error">Password is required.</span>
+      }
+    </div>
+    <button type="submit">Sign in</button>
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+  </form>
+  <p class="footer">Don't have an account? <a routerLink="/register">Register</a></p>
+</div>

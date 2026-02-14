@@ -1,0 +1,175 @@
+.event-form {
+  max-width: 32rem;
+
+  h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #1976d2;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .error {
+    color: #c62828;
+    margin-bottom: 1rem;
+  }
+
+  .field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .field-error {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.8rem;
+      color: #c62828;
+    }
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .tags-field {
+    .tag-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      padding: 0.25rem 0.5rem;
+      background: #e8f5e9;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .tag-remove {
+      padding: 0 0.2rem;
+      font-size: 1rem;
+      line-height: 1;
+      color: #2e7d32;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 2px;
+
+      &:hover {
+        color: #1b5e20;
+        background: #c8e6c9;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .tag-add {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      min-width: 120px;
+      box-sizing: border-box;
+
+      &:disabled {
+        opacity: 0.7;
+      }
+    }
+
+    .tag-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+    }
+
+    .tag-checkbox {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: normal;
+      cursor: pointer;
+
+      input {
+        width: auto;
+      }
+    }
+
+    .hint {
+      font-size: 0.875rem;
+      color: #666;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    button {
+      padding: 0.5rem 1.25rem;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover:not(:disabled) {
+        background: #1565c0;
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+
+    .cancel {
+      color: #666;
+      text-decoration: none;
+
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+}

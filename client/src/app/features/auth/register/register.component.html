@@ -1,0 +1,49 @@
+<div class="auth-card">
+  <h1>Register</h1>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" formControlName="fullName" />
+      @if (form.get('fullName')?.touched && form.get('fullName')?.invalid) {
+        <span class="field-error">
+          @if (form.get('fullName')?.errors?.['required']) {
+            Full name is required.
+          } @else if (form.get('fullName')?.errors?.['minlength']) {
+            Full name must be longer than 3 characters.
+          }
+        </span>
+      }
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <span class="field-error">
+          @if (form.get('email')?.errors?.['required']) {
+            Email is required.
+          } @else if (form.get('email')?.errors?.['email']) {
+            Please enter a valid email address.
+          }
+        </span>
+      }
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+        <span class="field-error">
+          @if (form.get('password')?.errors?.['required']) {
+            Password is required.
+          } @else if (form.get('password')?.errors?.['minlength']) {
+            Password must be longer than 3 characters.
+          }
+        </span>
+      }
+    </div>
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+    <button type="submit">Register</button>
+  </form>
+  <p class="footer">Already have an account? <a routerLink="/login">Login</a></p>
+</div>

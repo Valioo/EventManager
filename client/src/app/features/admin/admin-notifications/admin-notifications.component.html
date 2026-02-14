@@ -1,0 +1,115 @@
+<div class="admin-notifications">
+  <h1>Notifications</h1>
+  <p class="intro">Create notification rules (e.g. "notify X days before event start") and attach them to events. Subscribers will receive reminders.</p>
+
+  <section class="create-section">
+    <h2>Create notification</h2>
+    <form class="add-form" (ngSubmit)="addNotification()">
+      <label for="new-days">Days before event start</label>
+      <input id="new-days" type="number" min="1" [(ngModel)]="newDaysPrior" name="newDaysPrior" />
+      <button type="submit" class="btn-primary">Create</button>
+    </form>
+  </section>
+
+  <section class="attach-section" #attachSection>
+    <h2>Attach notification to event</h2>
+    <p class="attach-hint">Select a notification rule and an event. Subscribers to that event will get a reminder the specified number of days before the event starts.</p>
+    @if (attachData$ | async; as data) {
+      @if (data.loading) {
+        <p class="loading">Loading notifications and events…</p>
+      } @else {
+        @if (data.notifications.length === 0) {
+          <p class="empty-inline">Create a notification above first, then you can attach it to events.</p>
+        } @else if (data.events.length === 0) {
+          <p class="empty-inline">No events found. Create events first.</p>
+        } @else {
+          <form class="attach-form" (ngSubmit)="attachToEvent()">
+            <div class="form-group">
+              <label for="attach-notification">Notification</label>
+              <select id="attach-notification" [(ngModel)]="attachNotificationId" name="attachNotificationId" required>
+                <option [ngValue]="null">Select notification</option>
+                @for (n of data.notifications; track n.notificationId) {
+                  <option [ngValue]="n.notificationId">Notify {{ n.daysPrior }} day(s) before start (ID {{ n.notificationId }})</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="attach-event">Event</label>
+              <select id="attach-event" [(ngModel)]="attachEventId" name="attachEventId" required>
+                <option [ngValue]="null">Select event</option>
+                @for (e of data.events; track e.eventId) {
+                  <option [ngValue]="e.eventId">{{ e.title }} (ID {{ e.eventId }})</option>
+                }
+              </select>
+            </div>
+            <button type="submit" class="btn-primary" [disabled]="attachInProgress || attachNotificationId == null || attachEventId == null">
+              {{ attachInProgress ? 'Attaching…' : 'Attach to event' }}
+            </button>
+          </form>
+        }
+      }
+    }
+  </section>
+
+  <section class="list-section">
+    <h2>All notifications</h2>
+    @if (notifications$ | async; as list) {
+      @if (list.length === 0) {
+        <p class="empty">No notifications yet. Create one above.</p>
+      } @else {
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Days before start</th>
+              <th>Attached to events</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (n of list; track n.notificationId) {
+              @if (editingId() === n.notificationId) {
+                <tr class="edit-row">
+                  <td colspan="4">
+                    <form class="inline-form" (ngSubmit)="saveNotification(n)">
+                      <label>Days before start</label>
+                      <input type="number" min="1" [(ngModel)]="editDaysPrior" name="editDaysPrior" />
+                      <button type="submit" class="btn-primary">Save</button>
+                      <button type="button" class="btn-link" (click)="cancelEdit()">Cancel</button>
+                    </form>
+                  </td>
+                </tr>
+              } @else {
+                <tr>
+                  <td>{{ n.notificationId }}</td>
+                  <td>{{ n.daysPrior }}</td>
+                  <td>
+                    @if (n.eventIds.length === 0) {
+                      <span class="muted">None</span>
+                    } @else {
+                      <span class="event-pills">
+                        @for (eid of n.eventIds; track eid) {
+                          <span class="pill">
+                            Event {{ eid }}
+                            <button type="button" class="pill-remove" (click)="detachFromEvent(n.notificationId, eid)" title="Detach">×</button>
+                          </span>
+                        }
+                      </span>
+                    }
+                  </td>
+                  <td class="actions">
+                    <button type="button" class="btn-attach" (click)="setNotificationForAttach(n.notificationId)">Attach to event</button>
+                    <button type="button" class="btn-link" (click)="startEdit(n)">Edit</button>
+                    <button type="button" class="btn-delete" (click)="deleteNotification(n.notificationId)">Delete</button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      }
+    } @else {
+      <p>Loading…</p>
+    }
+  </section>
+</div>

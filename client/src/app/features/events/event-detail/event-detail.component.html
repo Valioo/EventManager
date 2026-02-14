@@ -1,0 +1,38 @@
+<div class="detail">
+  <a routerLink="/events">Back to events</a>
+  @if (event$ | async; as event) {
+    <div class="heading">
+      <h1>{{ event.title }}</h1>
+      <div class="heading-actions">
+        @if (canEdit) {
+          <a [routerLink]="['/events', event.eventId, 'edit']" class="btn-edit">Edit</a>
+        }
+        <button
+          type="button"
+          class="btn-subscribe"
+          [class.subscribed]="subscribed()"
+          [disabled]="subscriptionInProgress()"
+          (click)="toggleSubscription(event.eventId)"
+        >
+          @if (subscriptionInProgress()) {
+            …
+          } @else if (subscribed()) {
+            Unsubscribe
+          } @else {
+            Subscribe to this event
+          }
+        </button>
+      </div>
+    </div>
+    <p class="description">{{ event.description }}</p>
+    <p><strong>Start:</strong> {{ event.startDate | date:'medium' }}</p>
+    <p><strong>End:</strong> {{ event.endDate | date:'medium' }}</p>
+    <p><strong>Category:</strong> {{ event.category.name }}</p>
+    <p><strong>Location:</strong> {{ event.location.venueName }}, {{ event.location.city }}</p>
+    @if (event.tags?.length) {
+      <p><strong>Tags:</strong> {{ formatTags(event.tags) }}</p>
+    }
+  } @else {
+    <p>Loading…</p>
+  }
+</div>

@@ -1,0 +1,164 @@
+.admin-users {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .btn-primary {
+      padding: 0.5rem 1rem;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &:hover {
+        background: #1565c0;
+      }
+    }
+  }
+
+  .empty {
+    color: #666;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+      background: #f8f9fa;
+    }
+
+    .btn-link {
+      font-size: 0.875rem;
+      color: #1976d2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+
+      .btn-delete {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        color: #c62828;
+        background: transparent;
+        border: 1px solid #ef9a9a;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: #ffebee;
+        }
+      }
+    }
+  }
+
+  .inline-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+
+    input {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      min-width: 140px;
+    }
+
+    .btn-primary {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .edit-row td {
+    background: #f0f7ff;
+    padding: 0.75rem;
+  }
+
+  .meta {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  .roles-cell {
+    .role-pills {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-right: 0.5rem;
+    }
+
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      padding: 0.2rem 0.4rem;
+      background: #e3f2fd;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+
+    .role-remove {
+      padding: 0 0.2rem;
+      font-size: 1rem;
+      line-height: 1;
+      color: #1565c0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 2px;
+
+      &:hover {
+        color: #0d47a1;
+        background: #bbdefb;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    .role-add {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-width: 100px;
+
+      &:disabled {
+        opacity: 0.7;
+      }
+    }
+  }
+}

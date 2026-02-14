@@ -1,0 +1,101 @@
+<main>
+  <section class="search-filters">
+    <h2>Search events</h2>
+    <div class="filters">
+      <div class="field">
+        <label for="search-category">Category</label>
+        <select id="search-category" [(ngModel)]="categoryId">
+          <option [ngValue]="null">All categories</option>
+          @for (cat of categories$ | async; track cat.categoryId) {
+            <option [ngValue]="cat.categoryId">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="search-location">Location</label>
+        <select id="search-location" [(ngModel)]="locationId">
+          <option [ngValue]="null">All locations</option>
+          @for (loc of locations$ | async; track loc.id) {
+            <option [ngValue]="loc.id">{{ loc.venueName }} – {{ loc.city }}</option>
+          }
+        </select>
+      </div>
+      <div class="field tags-dropdown-wrapper" #tagsDropdown>
+        <label for="search-tags-trigger">Tags</label>
+        <button
+          type="button"
+          id="search-tags-trigger"
+          class="tags-trigger"
+          [class.open]="tagsDropdownOpen"
+          (click)="toggleTagsDropdown()"
+        >
+          @if (tagIds.length === 0) {
+            All tags
+          } @else {
+            {{ tagIds.length }} tag{{ tagIds.length === 1 ? '' : 's' }} selected
+          }
+        </button>
+        @if (tagsDropdownOpen) {
+          <div class="tags-dropdown-panel">
+            @for (tag of tags$ | async; track tag.id) {
+              <label class="tags-checkbox">
+                <input
+                  type="checkbox"
+                  [checked]="isTagSelected(tag.id)"
+                  (change)="toggleTag(tag.id)"
+                />
+                <span>{{ tag.name }}</span>
+              </label>
+            }
+            @if ((tags$ | async)?.length === 0) {
+              <span class="tags-empty">No tags available</span>
+            }
+          </div>
+        }
+      </div>
+      <button type="button" class="btn-search" (click)="applySearch()">Search</button>
+      <button type="button" class="btn-clear" (click)="clearFilters()">Clear</button>
+    </div>
+  </section>
+
+  @if (events$ | async; as result) {
+    @if (result.result.length === 0) {
+      <p>No events found.</p>
+    } @else {
+      <ul class="events">
+        @for (event of result.result; track event.eventId) {
+          <li>
+            <a [routerLink]="['/events', event.eventId]">{{ event.title }}</a>
+            <span class="date">{{ event.startDate | date:'mediumDate' }}</span>
+            <button
+              type="button"
+              class="btn-subscribe"
+              [class.subscribed]="isSubscribed()(event.eventId)"
+              [disabled]="subscriptionInProgress() === event.eventId"
+              (click)="toggleSubscription(event.eventId)"
+            >
+              @if (subscriptionInProgress() === event.eventId) {
+                …
+              } @else if (isSubscribed()(event.eventId)) {
+                Unsubscribe
+              } @else {
+                Subscribe
+              }
+            </button>
+          </li>
+        }
+      </ul>
+      <p class="meta">
+        Page {{ result.pageNumber }} of {{ result.maximumPages }}
+        @if (result.maximumPages > 1) {
+          <span class="pagination">
+            <button type="button" [disabled]="result.pageNumber <= 1" (click)="setPage(result.pageNumber - 1)">Previous</button>
+            <button type="button" [disabled]="result.pageNumber >= result.maximumPages" (click)="setPage(result.pageNumber + 1)">Next</button>
+          </span>
+        }
+      </p>
+    }
+  } @else {
+    <p>Loading…</p>
+  }
+</main>

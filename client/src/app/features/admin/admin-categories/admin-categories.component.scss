@@ -1,0 +1,126 @@
+.admin-categories {
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    h1 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .add-form {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      input {
+        padding: 0.4rem 0.6rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        min-width: 160px;
+      }
+
+      .btn-primary {
+        padding: 0.5rem 1rem;
+        background: #1976d2;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+
+        &:hover {
+          background: #1565c0;
+        }
+      }
+    }
+  }
+
+  .empty {
+    color: #666;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+      background: #f8f9fa;
+    }
+
+    .btn-link {
+      font-size: 0.875rem;
+      color: #1976d2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+
+      .btn-delete {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        color: #c62828;
+        background: transparent;
+        border: 1px solid #ef9a9a;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: #ffebee;
+        }
+      }
+    }
+  }
+
+  .inline-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+
+    input {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+
+    .btn-primary {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
+
+  .edit-row td {
+    background: #f0f7ff;
+    padding: 0.75rem;
+  }
+}

@@ -1,4 +1,4 @@
-﻿using EventManager.Application.Contracts;
+using EventManager.Application.Contracts;
 using EventManager.Application.Requests.Notification;
 using EventManager.Application.Responses.Notification;
 using EventManager.Domain;
@@ -40,6 +40,19 @@ public class EventNotificationService : IEventNotificationService
         await _appDbContext.Notifications.AddAsync(notification, cancellationToken);
         await _appDbContext.SaveChangesAsync(cancellationToken);
 
+        return true;
+    }
+
+    public async Task<bool> UpdateNotification(int notificationId, UpdateNotificationRequest request, CancellationToken cancellationToken)
+    {
+        var notification = await _appDbContext.Notifications.FirstOrDefaultAsync(x => x.Id == notificationId, cancellationToken);
+        if (notification == null)
+        {
+            return false;
+        }
+
+        notification.DaysPriorStart = request.DaysPrior;
+        await _appDbContext.SaveChangesAsync(cancellationToken);
         return true;
     }
 

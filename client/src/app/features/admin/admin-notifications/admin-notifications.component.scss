@@ -1,0 +1,242 @@
+.admin-notifications {
+  .intro {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  section {
+    margin-bottom: 2rem;
+  }
+
+  .attach-section {
+    padding: 1rem;
+    background: #f0f7ff;
+    border-radius: 8px;
+    border: 1px solid #bbdefb;
+  }
+
+  .attach-hint {
+    font-size: 0.875rem;
+    color: #555;
+    margin: 0 0 1rem;
+  }
+
+  .loading,
+  .empty-inline {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin: 0 0 0.75rem;
+    color: #374151;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  }
+
+  .attach-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+
+    .form-group {
+      min-width: 220px;
+    }
+
+    select {
+      min-width: 100%;
+    }
+  }
+
+  .add-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .add-form input[type='number'],
+  .attach-form input[type='number'] {
+    width: 5rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .add-form select,
+  .attach-form select {
+    min-width: 180px;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+  .add-form .btn-primary,
+  .attach-form .btn-primary {
+      padding: 0.5rem 1rem;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+
+      &:hover:not(:disabled) {
+        background: #1565c0;
+      }
+
+      &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .empty {
+    color: #666;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: #555;
+      background: #f8f9fa;
+    }
+
+    .muted {
+      color: #9ca3af;
+    }
+
+    .event-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+        background: #e5e7eb;
+        border-radius: 4px;
+
+        .pill-remove {
+          padding: 0 0.2rem;
+          font-size: 1rem;
+          line-height: 1;
+          color: #6b7280;
+          background: none;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            color: #c62828;
+          }
+        }
+      }
+    }
+
+    .btn-link {
+      font-size: 0.875rem;
+      color: #1976d2;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+
+      .btn-attach {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        color: #1565c0;
+        background: #e3f2fd;
+        border: 1px solid #90caf9;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: #bbdefb;
+        }
+      }
+
+      .btn-delete {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        color: #c62828;
+        background: transparent;
+        border: 1px solid #ef9a9a;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+          background: #ffebee;
+        }
+      }
+    }
+  }
+
+  .inline-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+
+    input {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      width: 5rem;
+    }
+
+    .btn-primary {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  }
+
+  .edit-row td {
+    background: #f0f7ff;
+    padding: 0.75rem;
+  }

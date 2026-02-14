@@ -1,0 +1,40 @@
+<div class="admin-events">
+  <div class="header">
+    <h1>Manage Events</h1>
+    <a routerLink="/events/new" class="btn-primary">Create event</a>
+  </div>
+  @if (events$ | async; as result) {
+    @if (result.result.length === 0) {
+      <p class="empty">No events found.</p>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Start date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (event of result.result; track event.eventId) {
+            <tr>
+              <td>
+                <a [routerLink]="['/events', event.eventId]">{{ event.title }}</a>
+              </td>
+              <td>{{ event.category?.name ?? '—' }}</td>
+              <td>{{ event.startDate | date:'mediumDate' }}</td>
+              <td class="actions">
+                <a [routerLink]="['/events', event.eventId, 'edit']" class="btn-link">Edit</a>
+                <button type="button" class="btn-delete" (click)="deleteEvent(event.eventId)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <p class="meta">Page {{ result.pageNumber }} of {{ result.maximumPages }}</p>
+    }
+  } @else {
+    <p>Loading…</p>
+  }
+</div>
