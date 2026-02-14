@@ -36,7 +36,7 @@ public class LocationController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> Create([FromBody] CreateLocationRequest request, CancellationToken cancellationToken)
     {
         var response = await _locationService.CreateLocation(request, cancellationToken);
@@ -57,7 +57,7 @@ public class LocationController : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateLocationRequest request, CancellationToken cancellationToken)
     {
         var response = await _locationService.UpdateLocation(request, id, cancellationToken);

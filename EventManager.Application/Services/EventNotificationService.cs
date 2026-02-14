@@ -18,9 +18,10 @@ public class EventNotificationService : IEventNotificationService
     public async Task<bool> AttachNotification(EventNotificationRequest request, CancellationToken cancellationToken)
     {
         var eventExists = await _appDbContext.Events.AnyAsync(x => x.Id == request.EventId, cancellationToken);
+        var notificationAvailable = await _appDbContext.Notifications.AnyAsync(x => x.Id == request.NotificationId, cancellationToken);
         var notificationExists = await _appDbContext.EventNotifications.AnyAsync(x => x.NotificationId == request.NotificationId && x.EventId == request.EventId, cancellationToken);
 
-        if (!eventExists || notificationExists)
+        if (!eventExists || notificationExists || !notificationAvailable)
         {
             return false;
         }

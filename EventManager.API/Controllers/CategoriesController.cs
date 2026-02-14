@@ -28,13 +28,13 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    /// Create a category. Allowed to Administrators only
+    /// Create a category
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> Create([FromBody] CategoryRequest request, CancellationToken cancellationToken)
     {
         var response = await _categoryService.CreateCategory(request, cancellationToken);
@@ -48,14 +48,14 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    /// Update category details. Allowed to Administrators only
+    /// Update category details
     /// </summary>
     /// <param name="id"></param>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "AdminOrOrganizer")]
     public async Task<IActionResult> Update([FromRoute] int id,[FromBody] CategoryRequest request, CancellationToken cancellationToken)
     {
         var response = await _categoryService.UpdateCategory(request, id, cancellationToken);

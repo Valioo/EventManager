@@ -20,7 +20,6 @@ public class EventNotificationJob : IEventNotificationJob
     {
         var today = DateTime.UtcNow.Date;
 
-        // Get all events with notifications where StartDate - DaysPriorStart == today
         var eventMatches = await _appDbContext.Events
             .Where(e => !e.IsDeleted)
             .SelectMany(e => e.EventNotifications, (e, en) => new { Event = e, en.Notification })

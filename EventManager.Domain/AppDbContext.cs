@@ -116,14 +116,14 @@ public class AppDbContext : DbContext
             .HasForeignKey(ur => ur.RoleId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Event -> Category (many events to one category). Category can be optional.
+        // Event -> Category (M:1)
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Category)
             .WithMany(c => c.Events)
             .HasForeignKey(e => e.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Event -> Location (many events to one location). Location required.
+        // Event -> Location (M:1)
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Location)
             .WithMany(l => l.Events)
@@ -146,7 +146,7 @@ public class AppDbContext : DbContext
         // Event <-> EventSubscription (M:N)
         modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.Event)
-            .WithMany(e => e.EventParticipants)
+            .WithMany(e => e.EventSubscribers)
             .HasForeignKey(ep => ep.EventId)
             .OnDelete(DeleteBehavior.Restrict);
 

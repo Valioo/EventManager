@@ -96,8 +96,11 @@ public class EventService : IEventService
     public async Task<EventResponse> GetById(int id, CancellationToken cancellationToken)
     {
         var existing = await _appDbContext.Events
+                                    .AsNoTracking()
                                     .Include(x => x.Category)
                                     .Include(x => x.Location)
+                                    .Include(x => x.EventTags)
+                                        .ThenInclude(x => x.Tag)
                                     .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         return existing is not null ? new EventResponse(existing) : null!;
