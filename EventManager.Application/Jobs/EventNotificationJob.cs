@@ -16,7 +16,6 @@ public class EventNotificationJob : IEventNotificationJob
         var today = DateTime.UtcNow.Date;
 
         var eventMatches = await _appDbContext.Events
-            .Where(e => !e.IsDeleted)
             .SelectMany(e => e.EventNotifications, (e, en) => new { Event = e, en.Notification })
             .Where(x => x.Event.StartDate.Date.AddDays(-x.Notification.DaysPriorStart) == today.Date)
             .ToListAsync();

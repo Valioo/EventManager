@@ -71,17 +71,11 @@ public class EventService : IEventService
 
     public async Task<bool> DeleteEvent(int id, CancellationToken cancellationToken)
     {
-        var existing = await _appDbContext.Events.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        var deleted = await _appDbContext.Events
+            .Where(x => x.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
 
-        if (existing is null)
-        {
-            return false;
-        }
-
-        existing.IsDeleted = true;
-        await _appDbContext.SaveChangesAsync(cancellationToken);
-
-        return true;
+        return deleted > 0;
     }
 
     public async Task<bool> DeleteTagFromEvent(int eventId, int tagId, CancellationToken cancellationToken)

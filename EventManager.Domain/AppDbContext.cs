@@ -117,8 +117,6 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasQueryFilter(u => !u.IsDeleted);
 
-        modelBuilder.Entity<Event>()
-            .HasQueryFilter(u => !u.IsDeleted);
 
         // ----------------------------
         // Relationships
@@ -129,7 +127,7 @@ public class AppDbContext : DbContext
             .HasOne(en => en.Event)
             .WithMany(en => en.EventNotifications)
             .HasForeignKey(x => x.EventId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<EventNotification>()
             .HasOne(en => en.Notification)
@@ -142,27 +140,27 @@ public class AppDbContext : DbContext
             .HasOne(ur => ur.User)
             .WithMany(u => u.UserRoles)
             .HasForeignKey(ur => ur.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<UserRole>()
             .HasOne(ur => ur.Role)
             .WithMany(r => r.UserRoles)
             .HasForeignKey(ur => ur.RoleId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Event -> Category (M:1)
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Category)
             .WithMany(c => c.Events)
             .HasForeignKey(e => e.CategoryId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Event -> Location (M:1)
         modelBuilder.Entity<Event>()
             .HasOne(e => e.Location)
             .WithMany(l => l.Events)
             .HasForeignKey(e => e.LocationId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Event <-> EventTag (M:N)
         modelBuilder.Entity<EventTag>()
@@ -182,33 +180,33 @@ public class AppDbContext : DbContext
             .HasOne(ep => ep.Event)
             .WithMany(e => e.EventSubscribers)
             .HasForeignKey(ep => ep.EventId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<EventSubscription>()
             .HasOne(ep => ep.User)
             .WithMany(u => u.EventSubscribers)
             .HasForeignKey(ep => ep.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Event -> TicketType (1:N)
         modelBuilder.Entity<TicketType>()
             .HasOne(tt => tt.Event)
             .WithMany(e => e.TicketTypes)
             .HasForeignKey(tt => tt.EventId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Ticket -> TicketType (N:1)
         modelBuilder.Entity<Ticket>()
             .HasOne(t => t.TicketType)
             .WithMany(tt => tt.Tickets)
             .HasForeignKey(t => t.TicketTypeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Ticket -> User (N:1)
         modelBuilder.Entity<Ticket>()
             .HasOne(t => t.User)
             .WithMany(u => u.Tickets)
             .HasForeignKey(t => t.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

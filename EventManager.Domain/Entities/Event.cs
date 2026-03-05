@@ -19,8 +19,6 @@ public class Event : BaseEntity
     public int LocationId { get; set; }
     public Location Location { get; set; }
 
-    public bool IsDeleted { get; set; } = false;
-
     // Navigation
     public ICollection<TicketType> TicketTypes { get; set; }
     public ICollection<EventTag> EventTags { get; set; }
