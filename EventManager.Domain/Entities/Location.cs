@@ -3,7 +3,7 @@
 namespace EventManager.Domain.Entities;
 
 [Table("Locations")]
-public class Location
+public class Location : BaseEntity
 {
     public int Id { get; set; }
 

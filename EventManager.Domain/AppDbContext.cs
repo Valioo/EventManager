@@ -33,6 +33,40 @@ public class AppDbContext : DbContext
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<EventNotification> EventNotifications { get; set; }
 
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        ProcessAuditChanges();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ProcessAuditChanges();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ProcessAuditChanges()
+    {
+        var utcNow = DateTimeOffset.UtcNow;
+
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.State is EntityState.Added or EntityState.Modified or EntityState.Deleted)
+            .ToList();
+
+        foreach (var entry in entries)
+        {
+            if (entry.Entity is BaseEntity baseEntity)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    baseEntity.CreatedAt = utcNow;
+                }
+
+                baseEntity.ModifiedAt = utcNow;
+            }
+        }
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = _configuration.GetConnectionString("DefaultConnection");

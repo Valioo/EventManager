@@ -29,7 +29,7 @@
     <p><strong>End:</strong> {{ event.endDate | date:'medium' }}</p>
     <p><strong>Category:</strong> {{ event.category.name }}</p>
     <p><strong>Location:</strong> {{ event.location.venueName }}, {{ event.location.city }}</p>
-    @if (event.tags?.length) {
+    @if (event.tags.length) {
       <p><strong>Tags:</strong> {{ formatTags(event.tags) }}</p>
     }
   } @else {

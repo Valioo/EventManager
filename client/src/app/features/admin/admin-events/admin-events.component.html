@@ -22,7 +22,7 @@
               <td>
                 <a [routerLink]="['/events', event.eventId]">{{ event.title }}</a>
               </td>
-              <td>{{ event.category?.name ?? '—' }}</td>
+              <td>{{ event.category.name }}</td>
               <td>{{ event.startDate | date:'mediumDate' }}</td>
               <td class="actions">
                 <a [routerLink]="['/events', event.eventId, 'edit']" class="btn-link">Edit</a>

@@ -1,0 +1,521 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Manager API",
+    "version": "v1",
+    "description": "OpenAPI specification with validation rules aligned to FluentValidation validators."
+  },
+  "paths": {
+    "/api/Auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RegisterDto" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/RegisterDto" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/RegisterDto" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginDto" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/LoginDto" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/LoginDto" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Categories": {
+      "get": { "tags": ["Categories"], "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "tags": ["Categories"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Categories/{id}": {
+      "put": {
+        "tags": ["Categories"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CategoryRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Categories"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Event": {
+      "post": {
+        "tags": ["Event"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateEventRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CreateEventRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CreateEventRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "get": {
+        "tags": ["Event"],
+        "parameters": [
+          { "name": "PageSize", "in": "query", "schema": { "type": "integer", "format": "int32", "minimum": 1, "maximum": 50, "description": "Items per page (1-50)" } },
+          { "name": "PageNumber", "in": "query", "schema": { "type": "integer", "format": "int32", "minimum": 1, "description": "Page number (≥ 1)" } },
+          { "name": "TagIds", "in": "query", "schema": { "type": "array", "items": { "type": "integer", "format": "int32" } } },
+          { "name": "CategoryId", "in": "query", "schema": { "type": "integer", "format": "int32" } },
+          { "name": "LocationId", "in": "query", "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Event/{id}": {
+      "get": {
+        "tags": ["Event"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Event"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateEventRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/UpdateEventRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/UpdateEventRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Event"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Event/{id}/ticket-types": {
+      "get": {
+        "tags": ["Event"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Event/{eventId}/tags/{tagId}": {
+      "post": {
+        "tags": ["Event"],
+        "parameters": [
+          { "name": "eventId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "tagId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Event"],
+        "parameters": [
+          { "name": "eventId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "tagId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/EventSubscriptions": {
+      "get": { "tags": ["EventSubscriptions"], "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "tags": ["EventSubscriptions"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "type": "integer", "format": "int32" } },
+            "text/json": { "schema": { "type": "integer", "format": "int32" } },
+            "application/*+json": { "schema": { "type": "integer", "format": "int32" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["EventSubscriptions"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "type": "integer", "format": "int32" } },
+            "text/json": { "schema": { "type": "integer", "format": "int32" } },
+            "application/*+json": { "schema": { "type": "integer", "format": "int32" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Health": {
+      "get": { "tags": ["Health"], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/Location": {
+      "get": { "tags": ["Location"], "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "tags": ["Location"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateLocationRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CreateLocationRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CreateLocationRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Location/{id}": {
+      "put": {
+        "tags": ["Location"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateLocationRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/UpdateLocationRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/UpdateLocationRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Location"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Notifications": {
+      "post": {
+        "tags": ["Notifications"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateNotificationRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CreateNotificationRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CreateNotificationRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Notifications"],
+        "parameters": [{ "name": "notificationId", "in": "query", "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "get": { "tags": ["Notifications"], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/Notifications/events": {
+      "post": {
+        "tags": ["Notifications"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Notifications"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/EventNotificationRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Roles": {
+      "get": { "tags": ["Roles"], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/Roles/{roleId}/assign/{userId}": {
+      "post": {
+        "tags": ["Roles"],
+        "parameters": [
+          { "name": "roleId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "userId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Roles/{roleId}/unassign/{userId}": {
+      "delete": {
+        "tags": ["Roles"],
+        "parameters": [
+          { "name": "roleId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } },
+          { "name": "userId", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Tags": {
+      "get": { "tags": ["Tags"], "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "tags": ["Tags"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/TagRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/TagRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/TagRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Tags/{id}": {
+      "put": {
+        "tags": ["Tags"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/TagRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/TagRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/TagRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Tags"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Tickets/purchase": {
+      "post": {
+        "tags": ["Tickets"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/PurchaseTicketRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/PurchaseTicketRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/PurchaseTicketRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Tickets/mine": {
+      "post": { "tags": ["Tickets"], "responses": { "200": { "description": "OK" } } }
+    },
+    "/api/TicketTypes": {
+      "post": {
+        "tags": ["TicketTypes"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateTicketTypeRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/CreateTicketTypeRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/CreateTicketTypeRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/TicketTypes/{id}": {
+      "put": {
+        "tags": ["TicketTypes"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateTicketTypeRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/UpdateTicketTypeRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/UpdateTicketTypeRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Users": {
+      "get": {
+        "tags": ["Users"],
+        "parameters": [
+          { "name": "PageSize", "in": "query", "schema": { "type": "integer", "format": "int32", "minimum": 1, "maximum": 50 } },
+          { "name": "PageNumber", "in": "query", "schema": { "type": "integer", "format": "int32", "minimum": 1 } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "put": {
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateUserRequest" } },
+            "text/json": { "schema": { "$ref": "#/components/schemas/UpdateUserRequest" } },
+            "application/*+json": { "schema": { "$ref": "#/components/schemas/UpdateUserRequest" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/Users/{id}": {
+      "get": {
+        "tags": ["Users"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer", "format": "int32" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "required": ["email", "fullName", "password"],
+        "properties": {
+          "fullName": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" },
+          "email": { "type": "string", "format": "email", "description": "Valid email address" },
+          "password": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "LoginDto": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email", "description": "Valid email address" },
+          "password": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "CategoryRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "TagRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 3, "description": "Required, non-empty, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "CreateEventRequest": {
+        "type": "object",
+        "required": ["title", "description", "startDate", "endDate", "categoryId", "locationId"],
+        "properties": {
+          "title": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" },
+          "description": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" },
+          "startDate": { "type": "string", "format": "date-time", "description": "Required; must be before endDate" },
+          "endDate": { "type": "string", "format": "date-time", "description": "Required; must be after startDate" },
+          "categoryId": { "type": "integer", "format": "int32", "description": "Required" },
+          "locationId": { "type": "integer", "format": "int32", "description": "Required" }
+        },
+        "additionalProperties": false
+      },
+      "UpdateEventRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" },
+          "description": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" },
+          "startDate": { "type": "string", "format": "date-time", "nullable": true, "description": "If set with endDate, must be before endDate" },
+          "endDate": { "type": "string", "format": "date-time", "nullable": true, "description": "If set with startDate, must be after startDate" },
+          "categoryId": { "type": "integer", "format": "int32", "nullable": true },
+          "locationId": { "type": "integer", "format": "int32", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "CreateLocationRequest": {
+        "type": "object",
+        "required": ["address", "city", "venueName"],
+        "properties": {
+          "address": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" },
+          "city": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" },
+          "venueName": { "type": "string", "minLength": 3, "description": "Required, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "UpdateLocationRequest": {
+        "type": "object",
+        "properties": {
+          "address": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" },
+          "city": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" },
+          "venueName": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "CreateTicketTypeRequest": {
+        "type": "object",
+        "required": ["name", "eventId", "price", "capacity"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "description": "Required, min 2 characters" },
+          "price": { "type": "number", "format": "double", "minimum": 0, "description": "Required, ≥ 0" },
+          "capacity": { "type": "integer", "format": "int32", "minimum": 0, "description": "Required, ≥ 0" },
+          "eventId": { "type": "integer", "format": "int32", "description": "Required" }
+        },
+        "additionalProperties": false
+      },
+      "UpdateTicketTypeRequest": {
+        "type": "object",
+        "properties": {
+          "capacity": { "type": "integer", "format": "int32", "minimum": 0, "nullable": true, "description": "If provided, ≥ 0" }
+        },
+        "additionalProperties": false
+      },
+      "PurchaseTicketRequest": {
+        "type": "object",
+        "required": ["ticketTypeId"],
+        "properties": {
+          "ticketTypeId": { "type": "integer", "format": "int32", "description": "Required" }
+        },
+        "additionalProperties": false
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "required": ["userId"],
+        "properties": {
+          "userId": { "type": "integer", "format": "int32", "description": "Required" },
+          "email": { "type": "string", "format": "email", "nullable": true, "description": "If provided, must be valid email" },
+          "fullName": { "type": "string", "minLength": 3, "nullable": true, "description": "If provided, min 3 characters" }
+        },
+        "additionalProperties": false
+      },
+      "CreateNotificationRequest": {
+        "type": "object",
+        "properties": {
+          "daysPrior": { "type": "integer", "format": "int32" }
+        },
+        "additionalProperties": false
+      },
+      "EventNotificationRequest": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "integer", "format": "int32" },
+          "notificationId": { "type": "integer", "format": "int32" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Enter JWT token like: Bearer {your token}",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{ "Bearer": [] }]
+}

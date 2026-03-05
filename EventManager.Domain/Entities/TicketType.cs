@@ -3,7 +3,7 @@
 namespace EventManager.Domain.Entities;
 
 [Table("TicketTypes")]
-public class TicketType
+public class TicketType : BaseEntity
 {
     public int Id { get; set; }
 
