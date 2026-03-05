@@ -1,9 +1,8 @@
 # Application - Event Manager
 
 The Event Management System allows organizations to create, manage, and host events.
-Users can browse available events, subscribe to receive notifications for events, purchase
-tickets, keep track of upcoming events.
-Event organizers can configure event details such as locations, categories, tickets and tags.
+Users can browse available events, subscribe to receive notifications for events, keep track of upcoming events.
+Event organizers can configure event details such as locations, categories and tags.
 Administration can create, edit, and assign permissions through the system. They can also
 oversee the platform, manage users, handle global configurations.
 
