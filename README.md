@@ -23,3 +23,11 @@ Run the application.
 You can login with the pre-created user:
 Mail: admin@gmail.com
 Pass: admin
+
+## Creating migrations
+
+To create a migration, execute the following:
+
+```bash
+dotnet ef migrations add {Name} --project EventManager.Domain --startup-project EventManager.API
+```
