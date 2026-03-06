@@ -5,6 +5,8 @@ using EventManager.Application.Configuration;
 using EventManager.API.Bootstrapper;
 using Hangfire;
 using EventManager.Application.Jobs;
+using Amazon.SimpleNotificationService;
+using Amazon;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,21 @@ builder.Services.AddHangfire(configuration => configuration
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
     .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection")));
+
+var awsConfig = builder.Configuration.GetSection("AWS");
+builder.Services.AddSingleton<IAmazonSimpleNotificationService>(sp =>
+{
+    return new AmazonSimpleNotificationServiceClient(
+        awsConfig["AccessKey"],
+        awsConfig["SecretKey"],
+        new AmazonSimpleNotificationServiceConfig
+        {
+            ServiceURL = awsConfig["ServiceURL"],
+            AuthenticationRegion = awsConfig["Region"],
+            UseHttp = true,
+            //RegionEndpoint = RegionEndpoint.GetBySystemName(awsConfig["Region"])
+        });
+});
 
 builder.Services.AddHangfireServer();
 
@@ -58,17 +75,17 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHangfireDashboard();
 
-RecurringJob.AddOrUpdate<IEventNotificationJob>(
-    "daily-event-notification-check",
-    job => job.RunAsync(),
-    Cron.Daily
-);
-
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
     await DbSeeder.SeedAsync(db, builder.Configuration.GetSection("Auth"));
 }
+
+RecurringJob.AddOrUpdate<IEventNotificationJob>(
+    "daily-event-notification-check",
+    job => job.RunAsync(),
+    Cron.Daily
+);
 
 app.Run();

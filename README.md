@@ -9,14 +9,21 @@ oversee the platform, manage users, handle global configurations.
 ## Setting up the development environment
 
 You will need the following:
- - SQL Server
+ - Docker
  - .NET 8
+ - tflocal
  
-Withing sql server, create 2 databases, with the following names:
- - EventManager
- - EventManager_Hangfire
- 
-Update appsettings.json to point to your local database
+To start the containers, execute:
+```
+docker-compose up -d
+```
+
+Application is running localstack instead of connecting to AWS infra. In order to set up the container within /terraform execute the following:
+```
+tflocal init
+tflocal plan
+tflocal apply
+```
 
 Run the application.
 

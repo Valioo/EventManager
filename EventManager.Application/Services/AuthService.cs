@@ -41,7 +41,7 @@ public class AuthService : IAuthService
         };
 
         await _db.Users.AddAsync(user, cancellationToken);
-        await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync(cancellationToken);
 
         return await GenerateJwt(user, cancellationToken);
     }
